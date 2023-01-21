@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.time.LocalDate;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,19 +18,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    static private SharedPreferences sharedPref;
+    static private String token;
+    static private Integer userId;
+    static private Long date;
+
     /*
-        При открытии приложения создается кнопка с переходом к сервису ВК
-        для получения токена.
+        При открытии приложения оно проверяет сохраненные настройки токена.
+        Если дата токена не сегодня, то идет переход для получения токена.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.auth).setOnClickListener(view -> {
+        sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
+        token = sharedPref.getString("TOKEN", "");
+        userId = sharedPref.getInt("USER_ID", 0);
+        date = sharedPref.getLong("DATE", 0L);
+        if (LocalDate.ofEpochDay(date).isBefore(LocalDate.now())) {
             Intent token = new Intent(getApplicationContext(), WebActivity.class);
             startActivity(token);
-        });
+        }
     }
 
     /*
@@ -42,10 +53,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        SharedPreferences sharedPref = this.getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
-        String token = sharedPref.getString("TOKEN", "");
-        Integer userId = sharedPref.getInt("USER_ID", 0);
-//        Long date = sharedPref.getLong("DATE", 0L);
+        sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
+        token = sharedPref.getString("TOKEN", "");
+        userId = sharedPref.getInt("USER_ID", 0);
 
         TextView tokenView = findViewById(R.id.token);
 
