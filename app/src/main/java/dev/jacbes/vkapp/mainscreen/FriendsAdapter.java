@@ -14,6 +14,9 @@ import java.util.List;
 import dev.jacbes.vkapp.R;
 import dev.jacbes.vkapp.model.VKUser;
 
+/*
+    Класс адаптера для заполнения каждого элемента recyclerview.
+ */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
 
     Context context;
@@ -29,7 +32,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     @NonNull
     @Override
     public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View friendItemView = inflater.inflate(layout, parent, false);
 
         return new FriendsViewHolder(friendItemView);
@@ -45,6 +48,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         return vkUserList.size();
     }
 
+    /*
+        Класс каждой строки, в котором она заполняется.
+     */
     static class FriendsViewHolder extends RecyclerView.ViewHolder {
 
         TextView position;

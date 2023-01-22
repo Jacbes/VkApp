@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import dev.jacbes.vkapp.authscreen.VKAPIService;
@@ -26,14 +26,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<VKUser> friendsList = new ArrayList<VKUser>();
+    List<VKUser> friendsList = new LinkedList<>();
 
-    static private RecyclerView friendListView;
+    private FriendsAdapter friendsAdapter;
 
-    static private SharedPreferences sharedPref;
-    static private String token;
-    static private Integer userId;
-    static private Long date;
+    private SharedPreferences sharedPref;
+    private String token;
+    private Integer userId;
+    private Long date;
 
     /*
         При открытии приложения оно проверяет сохраненные настройки токена.
@@ -45,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
-        friendListView = findViewById(R.id.friends_list);
+        RecyclerView friendListView = findViewById(R.id.friends_list);
+
+        friendsAdapter = new FriendsAdapter(getApplicationContext(), R.layout.friends_list_item, friendsList);
+        friendListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        friendListView.setAdapter(friendsAdapter);
 
         getInfoFromSharedPref();
         if (LocalDate.ofEpochDay(date).isBefore(LocalDate.now())) {
@@ -72,16 +76,15 @@ public class MainActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl("https://api.vk.com/method/")
                     .build();
-
             VKAPIService vkapiService = retrofit.create(VKAPIService.class);
+
             vkapiService.getFriends(userId, token).enqueue(new Callback<VKResponse>() {
                 @Override
                 public void onResponse(Call<VKResponse> call, Response<VKResponse> response) {
                     if (response.body() != null) {
-                        friendsList = response.body().getResponse().getItems();
-                        FriendsAdapter adapter = new FriendsAdapter(getApplicationContext(), R.layout.friends_list_item, friendsList);
-                        friendListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        friendListView.setAdapter(adapter);
+                        friendsList.clear();
+                        friendsList.addAll(response.body().getResponse().getItems());
+                        friendsAdapter.notifyDataSetChanged();
                     }
                 }
 
