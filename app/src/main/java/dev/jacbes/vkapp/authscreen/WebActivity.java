@@ -1,4 +1,4 @@
-package dev.jacbes.vkapp;
+package dev.jacbes.vkapp.authscreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.time.LocalDate;
+
+import dev.jacbes.vkapp.R;
 
 /*
     Активити для отображения запроса к сервису ВК для получения токена
