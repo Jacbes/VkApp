@@ -1,15 +1,23 @@
 package dev.jacbes.vkapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import dev.jacbes.vkapp.authscreen.VKAPIService;
+import dev.jacbes.vkapp.authscreen.WebActivity;
+import dev.jacbes.vkapp.mainscreen.FriendsAdapter;
+import dev.jacbes.vkapp.model.VKResponse;
+import dev.jacbes.vkapp.model.VKUser;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,6 +25,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+
+    List<VKUser> friendsList = new ArrayList<VKUser>();
+
+    static private RecyclerView friendListView;
 
     static private SharedPreferences sharedPref;
     static private String token;
@@ -33,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
-        token = sharedPref.getString("TOKEN", "");
-        userId = sharedPref.getInt("USER_ID", 0);
-        date = sharedPref.getLong("DATE", 0L);
+        friendListView = findViewById(R.id.friends_list);
+
+        getInfoFromSharedPref();
         if (LocalDate.ofEpochDay(date).isBefore(LocalDate.now())) {
             Intent token = new Intent(getApplicationContext(), WebActivity.class);
             startActivity(token);
@@ -53,11 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
-        token = sharedPref.getString("TOKEN", "");
-        userId = sharedPref.getInt("USER_ID", 0);
-
-        TextView tokenView = findViewById(R.id.token);
+        getInfoFromSharedPref();
 
         if (!token.isEmpty()) {
             Retrofit retrofit = new Retrofit.Builder()
@@ -70,11 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<VKResponse> call, Response<VKResponse> response) {
                     if (response.body() != null) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        response.body().getResponse().getItems().forEach(element -> {
-                            stringBuilder.append(element.getFirstName()).append(" ").append(element.getLastName()).append("\n");
-                        });
-                        tokenView.setText(stringBuilder.toString());
+                        friendsList = response.body().getResponse().getItems();
+                        FriendsAdapter adapter = new FriendsAdapter(getApplicationContext(), R.layout.friends_list_item, friendsList);
+                        friendListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        friendListView.setAdapter(adapter);
                     }
                 }
 
@@ -83,5 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void getInfoFromSharedPref() {
+        token = sharedPref.getString("TOKEN", "");
+        userId = sharedPref.getInt("USER_ID", 0);
+        date = sharedPref.getLong("DATE", 0L);
     }
 }

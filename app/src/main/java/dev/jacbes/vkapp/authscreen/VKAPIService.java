@@ -1,5 +1,6 @@
-package dev.jacbes.vkapp;
+package dev.jacbes.vkapp.authscreen;
 
+import dev.jacbes.vkapp.model.VKResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
