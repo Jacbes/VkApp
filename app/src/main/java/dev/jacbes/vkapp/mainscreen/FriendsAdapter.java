@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import dev.jacbes.vkapp.R;
@@ -36,7 +38,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         LayoutInflater inflater = LayoutInflater.from(context);
         View friendItemView = inflater.inflate(layout, parent, false);
 
-        return new FriendsViewHolder(friendItemView);
+        return new FriendsViewHolder(friendItemView, context);
     }
 
     @Override
@@ -54,15 +56,17 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
      */
     static class FriendsViewHolder extends RecyclerView.ViewHolder {
 
+        Context context;
         TextView position;
         TextView firstName;
         TextView lastName;
         ImageView avatar;
         TextView statusOnline;
 
-        public FriendsViewHolder(@NonNull View itemView) {
+        public FriendsViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
+            this.context = context;
             this.position = itemView.findViewById(R.id.position);
             this.firstName = itemView.findViewById(R.id.first_name);
             this.lastName = itemView.findViewById(R.id.last_name);
@@ -74,10 +78,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             this.position.setText(String.valueOf(position + 1));
             this.firstName.setText(friend.getFirstName());
             this.lastName.setText(friend.getLastName());
-            //this.avatar.setImageResource(friend.getPhotoURL());
+            Glide.with(context)
+                    .load(friend.getPhotoURL())
+                    .into(avatar);
 
-            if(friend.getOnlineStatus() == 1){
+            if (friend.getOnlineStatus() == 1) {
                 this.statusOnline.setText("Online");
+            } else {
+                this.statusOnline.setText("");
             }
         }
     }

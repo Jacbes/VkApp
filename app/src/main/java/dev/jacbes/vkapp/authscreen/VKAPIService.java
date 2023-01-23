@@ -9,6 +9,6 @@ import retrofit2.http.Query;
     Запрос к VK API для получения списка друзей.
  */
 public interface VKAPIService {
-    @GET("friends.get?v=5.131&fields=contacts&fields=online&fields=photo_50")
+    @GET("friends.get?v=5.131&fields=contacts,online,photo_100")
     Call<VKResponse> getFriends(@Query("user_id") Integer idUser, @Query("access_token") String token);
 }

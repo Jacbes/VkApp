@@ -17,7 +17,7 @@ public class VKUser {
     @SerializedName("online")
     int onlineStatus;
 
-    @SerializedName("photo_50")
+    @SerializedName("photo_100")
     String photoURL;
 
     public VKUser() {
