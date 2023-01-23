@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import dev.jacbes.vkapp.R;
@@ -20,7 +22,7 @@ import dev.jacbes.vkapp.model.VKUser;
  */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
 
-    Context context;
+    static Context context;
     int layout;
     List<VKUser> vkUserList;
 
@@ -74,10 +76,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             this.position.setText(String.valueOf(position + 1));
             this.firstName.setText(friend.getFirstName());
             this.lastName.setText(friend.getLastName());
-            //this.avatar.setImageResource(friend.getPhotoURL());
+            Glide.with(context)
+                    .load(friend.getPhotoURL())
+                    .into(avatar);
 
-            if(friend.getOnlineStatus() == 1){
+            if (friend.getOnlineStatus() == 1) {
                 this.statusOnline.setText("Online");
+            } else {
+                this.statusOnline.setText("");
             }
         }
     }
