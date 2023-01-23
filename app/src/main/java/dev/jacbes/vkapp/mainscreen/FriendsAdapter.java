@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         TextView position;
         TextView firstName;
         TextView lastName;
+        ImageView avatar;
 
         public FriendsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,12 +65,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             this.position = itemView.findViewById(R.id.position);
             this.firstName = itemView.findViewById(R.id.first_name);
             this.lastName = itemView.findViewById(R.id.last_name);
+            this.avatar = itemView.findViewById(R.id.avatar);
         }
 
         void bind(VKUser friend, int position) {
             this.position.setText(String.valueOf(position + 1));
             this.firstName.setText(friend.getFirstName());
             this.lastName.setText(friend.getLastName());
+            this.avatar.setImageResource(R.drawable.ic_launcher_foreground);
         }
     }
 }
