@@ -58,6 +58,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         TextView firstName;
         TextView lastName;
         ImageView avatar;
+        TextView statusOnline;
 
         public FriendsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,13 +67,18 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             this.firstName = itemView.findViewById(R.id.first_name);
             this.lastName = itemView.findViewById(R.id.last_name);
             this.avatar = itemView.findViewById(R.id.avatar);
+            this.statusOnline = itemView.findViewById(R.id.onlineStatus);
         }
 
         void bind(VKUser friend, int position) {
             this.position.setText(String.valueOf(position + 1));
             this.firstName.setText(friend.getFirstName());
             this.lastName.setText(friend.getLastName());
-            this.avatar.setImageResource(R.drawable.ic_launcher_foreground);
+            //this.avatar.setImageResource(friend.getPhotoURL());
+
+            if(friend.getOnlineStatus() == 1){
+                this.statusOnline.setText("Online");
+            }
         }
     }
 }
