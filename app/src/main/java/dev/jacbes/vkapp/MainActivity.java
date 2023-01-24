@@ -17,6 +17,7 @@ import dev.jacbes.vkapp.authscreen.VKAPIService;
 import dev.jacbes.vkapp.authscreen.WebActivity;
 import dev.jacbes.vkapp.mainscreen.FriendsAdapter;
 import dev.jacbes.vkapp.model.VKResponse;
+import dev.jacbes.vkapp.model.VKResponseFollowers;
 import dev.jacbes.vkapp.model.VKUser;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         friendsList.clear();
                         friendsList.addAll(response.body().getResponse().getItems());
+
                         friendsAdapter.notifyDataSetChanged();
                     }
                 }

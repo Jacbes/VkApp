@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class VKUser {
 
+    @SerializedName("id")
+    Integer id;
+
     @SerializedName("domain")
     String domain;
     @SerializedName("first_name")
@@ -36,8 +39,17 @@ public class VKUser {
     @SerializedName("status")
     String status;
 
+    Integer followers;
 
     public VKUser() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getFollowers() {
+        return followers;
     }
 
     public String getDomain() {
@@ -78,6 +90,14 @@ public class VKUser {
 
     public String getPhotoOriginalURL() {
         return photoOriginalURL;
+    }
+
+    public void setFollowers(Integer followers) {
+        this.followers = followers;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setDomain(String domain) {

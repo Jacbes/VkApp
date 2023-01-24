@@ -151,6 +151,17 @@
             android:textColor="@color/white"
             android:textSize="20dp" />
 
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/followers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:text="Подписчики:"
+        android:textColor="#8E8E8E"
+        android:textSize="20dp" />
 
 </LinearLayout>

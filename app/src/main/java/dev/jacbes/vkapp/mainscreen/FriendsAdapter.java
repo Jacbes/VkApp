@@ -109,7 +109,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             toInfo.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             user = vkUserList.get(Integer.parseInt(position.getText().toString()) - 1);
 
-
+            toInfo.putExtra("id", user.getId());
             toInfo.putExtra("firstName", user.getFirstName());
             toInfo.putExtra("lastName", user.getLastName());
             toInfo.putExtra("photoOriginalURL", user.getPhotoOriginalURL());
