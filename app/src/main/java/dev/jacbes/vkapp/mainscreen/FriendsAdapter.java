@@ -24,7 +24,7 @@ import dev.jacbes.vkapp.model.VKUser;
  */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
 
-    Context context;
+    static Context context;
     int layout;
     List<VKUser> vkUserList;
 
