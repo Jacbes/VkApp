@@ -27,13 +27,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<VKUser> friendsList = new LinkedList<>();
+    static List<VKUser> friendsList = new LinkedList<>();
 
-    private FriendsAdapter friendsAdapter;
+    static FriendsAdapter friendsAdapter;
+    static VKAPIService vkapiService;
 
     private SharedPreferences sharedPref;
-    private String token;
-    private Integer userId;
+    static String token;
+    static Integer userId;
     private Long date;
 
     /*
@@ -45,12 +46,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
-        RecyclerView friendListView = findViewById(R.id.friends_list);
-
         friendsAdapter = new FriendsAdapter(getApplicationContext(), R.layout.friends_list_item, friendsList);
+        vkapiService = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("https://api.vk.com/method/")
+                .build()
+                .create(VKAPIService.class);
+
+        sharedPref = getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
+
+        RecyclerView friendListView = findViewById(R.id.friends_list);
         friendListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         friendListView.setAdapter(friendsAdapter);
+
+        startService(new Intent(MainActivity.this, BackgroundFriendService.class));
 
         getInfoFromSharedPref();
         if (LocalDate.ofEpochDay(date).isBefore(LocalDate.now())) {
@@ -73,12 +82,6 @@ public class MainActivity extends AppCompatActivity {
         getInfoFromSharedPref();
 
         if (!token.isEmpty()) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl("https://api.vk.com/method/")
-                    .build();
-            VKAPIService vkapiService = retrofit.create(VKAPIService.class);
-
             vkapiService.getFriends(userId, token).enqueue(friendsCallback);
         }
     }
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         date = sharedPref.getLong("DATE", 0L);
     }
 
-    private final Callback<VKResponse> friendsCallback = new Callback<VKResponse>() {
+    static final Callback<VKResponse> friendsCallback = new Callback<VKResponse>() {
         @Override
         public void onResponse(@NonNull Call<VKResponse> call, @NonNull Response<VKResponse> response) {
             if ((response.body() != null) && (response.body().getResponse() != null)) {

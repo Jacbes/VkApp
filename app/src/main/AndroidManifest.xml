@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VkApp"
         tools:targetApi="31">
+        <service
+            android:name=".BackgroundFriendService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".userscreen.UserActivity"
             android:exported="false" />

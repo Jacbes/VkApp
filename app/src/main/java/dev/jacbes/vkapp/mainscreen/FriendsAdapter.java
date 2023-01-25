@@ -24,12 +24,10 @@ import dev.jacbes.vkapp.model.VKUser;
  */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
 
-    Context context;
     int layout;
     List<VKUser> vkUserList;
 
     public FriendsAdapter(Context context, int layout, List<VKUser> vkUserList) {
-        this.context = context;
         this.layout = layout;
         this.vkUserList = vkUserList;
     }
@@ -37,10 +35,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     @NonNull
     @Override
     public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View friendItemView = inflater.inflate(layout, parent, false);
 
-        return new FriendsViewHolder(friendItemView, context, vkUserList);
+        return new FriendsViewHolder(friendItemView, parent.getContext(), vkUserList);
     }
 
     @Override
