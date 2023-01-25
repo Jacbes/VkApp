@@ -27,13 +27,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    static List<VKUser> friendsList = new LinkedList<>();
+    public static List<VKUser> friendsList = new LinkedList<>();
 
+    public static VKAPIService vkapiService;
     static FriendsAdapter friendsAdapter;
-    static VKAPIService vkapiService;
 
     private SharedPreferences sharedPref;
-    static String token;
+    public static String token;
     static Integer userId;
     private Long date;
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        friendsAdapter = new FriendsAdapter(getApplicationContext(), R.layout.friends_list_item, friendsList);
+        friendsAdapter = new FriendsAdapter(R.layout.friends_list_item);
         vkapiService = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.vk.com/method/")
