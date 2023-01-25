@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import dev.jacbes.vkapp.R;
-import dev.jacbes.vkapp.UserActivity;
+import dev.jacbes.vkapp.userscreen.UserActivity;
 import dev.jacbes.vkapp.model.VKUser;
 
 /*
@@ -24,7 +24,7 @@ import dev.jacbes.vkapp.model.VKUser;
  */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
 
-    static Context context;
+    Context context;
     int layout;
     List<VKUser> vkUserList;
 
@@ -77,13 +77,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             this.avatar = itemView.findViewById(R.id.avatar);
             this.statusOnline = itemView.findViewById(R.id.onlineStatus);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    intentToGoToUserActivity();
-                }
-            });
-
+            itemView.setOnClickListener(view -> intentToGoToUserActivity());
         }
 
         void bind(VKUser friend, int position) {

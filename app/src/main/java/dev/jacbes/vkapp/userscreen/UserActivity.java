@@ -1,5 +1,6 @@
-package dev.jacbes.vkapp;
+package dev.jacbes.vkapp.userscreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import dev.jacbes.vkapp.R;
 import dev.jacbes.vkapp.authscreen.VKAPIService;
 import dev.jacbes.vkapp.model.VKResponseFollowers;
 import retrofit2.Call;
@@ -45,8 +47,8 @@ public class UserActivity extends AppCompatActivity {
         VKAPIService vkapiService = retrofit.create(VKAPIService.class);
         vkapiService.getFollowers(id, getSharedPreferences("VK_PREF", Context.MODE_PRIVATE).getString("TOKEN", "")).enqueue(new Callback<VKResponseFollowers>() {
             @Override
-            public void onResponse(Call<VKResponseFollowers> call, Response<VKResponseFollowers> response) {
-                if (response.body() != null) {
+            public void onResponse(@NonNull Call<VKResponseFollowers> call, @NonNull Response<VKResponseFollowers> response) {
+                if ((response.body() != null) && (response.body().getResponse() != null)) {
                     followers = response.body().getResponse().getCount();
                     ((TextView) findViewById(R.id.first_name)).setText(firstName);
                     ((TextView) findViewById(R.id.last_name)).setText(lastName);
@@ -63,7 +65,7 @@ public class UserActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<VKResponseFollowers> call, Throwable t) {
+            public void onFailure(@NonNull Call<VKResponseFollowers> call, @NonNull Throwable t) {
 
             }
         });

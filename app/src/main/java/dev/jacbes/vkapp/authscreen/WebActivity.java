@@ -60,7 +60,7 @@ public class WebActivity extends AppCompatActivity {
 
             if (url.contains("access_token=vk")) {
                 String token = url.substring(url.indexOf('=') + 1, url.indexOf('&'));
-                Integer userId = Integer.valueOf(url.substring(url.lastIndexOf('=') + 1));
+                int userId = Integer.parseInt(url.substring(url.lastIndexOf('=') + 1));
 
                 SharedPreferences sharedPref = activity.getSharedPreferences("VK_PREF", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();

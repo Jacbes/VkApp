@@ -1,7 +1,6 @@
 package dev.jacbes.vkapp.authscreen;
 
 import dev.jacbes.vkapp.model.VKResponse;
-import dev.jacbes.vkapp.model.VKResponseBodyFollowers;
 import dev.jacbes.vkapp.model.VKResponseFollowers;
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,5 +1,6 @@
 package dev.jacbes.vkapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +18,6 @@ import dev.jacbes.vkapp.authscreen.VKAPIService;
 import dev.jacbes.vkapp.authscreen.WebActivity;
 import dev.jacbes.vkapp.mainscreen.FriendsAdapter;
 import dev.jacbes.vkapp.model.VKResponse;
-import dev.jacbes.vkapp.model.VKResponseFollowers;
 import dev.jacbes.vkapp.model.VKUser;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,21 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             VKAPIService vkapiService = retrofit.create(VKAPIService.class);
 
-            vkapiService.getFriends(userId, token).enqueue(new Callback<VKResponse>() {
-                @Override
-                public void onResponse(Call<VKResponse> call, Response<VKResponse> response) {
-                    if (response.body() != null) {
-                        friendsList.clear();
-                        friendsList.addAll(response.body().getResponse().getItems());
-
-                        friendsAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<VKResponse> call, Throwable t) {
-                }
-            });
+            vkapiService.getFriends(userId, token).enqueue(friendsCallback);
         }
     }
 
@@ -102,4 +88,20 @@ public class MainActivity extends AppCompatActivity {
         userId = sharedPref.getInt("USER_ID", 0);
         date = sharedPref.getLong("DATE", 0L);
     }
+
+    private final Callback<VKResponse> friendsCallback = new Callback<VKResponse>() {
+        @Override
+        public void onResponse(@NonNull Call<VKResponse> call, @NonNull Response<VKResponse> response) {
+            if ((response.body() != null) && (response.body().getResponse() != null)) {
+                friendsList.clear();
+                friendsList.addAll(response.body().getResponse().getItems());
+
+                friendsAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onFailure(@NonNull Call<VKResponse> call, @NonNull Throwable t) {
+        }
+    };
 }
