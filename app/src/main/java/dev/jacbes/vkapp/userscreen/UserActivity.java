@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import dev.jacbes.vkapp.R;
 import dev.jacbes.vkapp.model.VKResponseFollowers;
 import dev.jacbes.vkapp.model.VKUser;
+import dev.jacbes.vkapp.tools.DataConverter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +51,9 @@ public class UserActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.status)).setText(user.getStatus());
                 ((TextView) findViewById(R.id.domain)).setText(user.getDomain());
                 ((TextView) findViewById(R.id.mobilePhone)).setText(user.getMobilePhone());
-                ((TextView) findViewById(R.id.dataOfBirth)).setText(user.getDataOfBirth());
+                if (user.getDataOfBirth() != null) {
+                    ((TextView) findViewById(R.id.dataOfBirth)).setText(DataConverter.dateToString(user.getDataOfBirth()));
+                }
                 ((TextView) findViewById(R.id.followers)).setText(followers);
 
                 Glide.with(getApplicationContext())
